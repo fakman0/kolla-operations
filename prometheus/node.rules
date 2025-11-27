@@ -288,3 +288,20 @@
     "for": "5m"
     "labels":
       "severity": "warning"
+  - alert: NodeSwapAlmostFull
+    for: 5m
+    expr: |
+      (
+        (
+          node_memory_SwapTotal_bytes{job="node"}
+          -
+          node_memory_SwapFree_bytes{job="node"}
+        ) / node_memory_SwapTotal_bytes{job="node"} > 0.90
+        and
+        node_memory_SwapTotal_bytes{job="node"} > 0
+      )
+    labels:
+      severity: critical
+    annotations:
+      summary: 'Node {{ $labels.instance }} swap usage is high ({{ printf "%.2f%%" ($value * 100) }})'
+      description: 'Node {{ $labels.instance }} swap usage is at {{ printf "%.2f%%" ($value * 100) }}. Processes can thrash and performance will degrade heavily.'
