@@ -247,6 +247,30 @@
       "oid": "1.3.6.1.4.1.50495.1.2.1.4.5"
       "severity": "warning"
       "type": "ceph_default"
+  - "alert": "CephOsdReadLatencyDegraded"
+    "annotations":
+      "description": "Average OSD read latency > 15ms. User-perceived slowness possible under IO load."
+      "summary": "Ceph read latency degraded on cluster {{ $labels.cluster }}"
+    "expr": |
+      (rate(ceph_osd_op_r_latency_sum[1m])
+       / rate(ceph_osd_op_r_latency_count[1m])) > 0.015
+    "for": "1m"
+    "labels":
+      "oid": "1.3.6.1.4.1.50495.1.2.1.4.9"
+      "severity": "warning"
+      "type": "ceph_default"
+  - "alert": "CephOsdWriteLatencyDegraded"
+    "annotations":
+      "description": "Average OSD write latency > 30ms. Watch for sustained degradation."
+      "summary": "Ceph write latency degraded on cluster {{ $labels.cluster }}"
+    "expr": |
+      (rate(ceph_osd_op_w_latency_sum[1m])
+       / rate(ceph_osd_op_w_latency_count[1m])) > 0.030
+    "for": "1m"
+    "labels":
+      "oid": "1.3.6.1.4.1.50495.1.2.1.4.10"
+      "severity": "warning"
+      "type": "ceph_default"
 - "name": "mds"
   "rules":
   - "alert": "CephFilesystemDamaged"
