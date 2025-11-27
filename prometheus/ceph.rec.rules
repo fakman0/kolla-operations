@@ -1,1 +1,10 @@
-{}
+groups:
+- name: "ceph-mtu-filter"
+  rules:
+  - record: "ceph:instance_device:node_interface_mtu_bytes"
+    expr: |
+      node_network_mtu_bytes{job="node",
+        device!~"qbr.*|qvb.*|qvo.*|tap.*|br.*|cirename.*|lo.*|o-.*|ovs-.*|qr.*|vxlan.*"
+      }
+      and on(instance, device)
+      node_network_up{job="node"} > 0
