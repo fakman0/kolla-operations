@@ -1,0 +1,8 @@
+groups:
+- name: openstack_service_last_seen.rules
+  rules:
+  - record: openstack_service_last_seen
+    expr: |
+      container_last_seen{name=~"^(ceph|grafana|mariadb|nova|octavia|barbican|heat|magnum|neutron|cinder|glance|keystone|prometheus|horizon|opensearch|placement|openvswitch|memcached|redis|haproxy|keepalived|kolla_toolbox|cron|fluentd|rabbitmq).*"}
+      OR
+      container_last_seen{id="/"}
